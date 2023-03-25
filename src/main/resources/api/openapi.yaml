@@ -1,0 +1,66 @@
+openapi: 3.0.1
+info:
+  title: Demo Url Shortener app
+  description: 'Url Shortener app API'
+  version: 0.0.1
+servers:
+  - url: http://localhost:8080
+
+paths:
+
+  /url:
+    post:
+      summary: Get short link from long one
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UrlRequest'
+        required: true
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UrlResponse'
+      operationId: createShortUrl
+
+  /url/qr:
+    post:
+      summary: Generate QR code for short link
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UrlRequest'
+        required: true
+      responses:
+        '200':
+          description: Success
+          content:
+            image/png:
+              schema:
+                type: string
+                format: byte
+      operationId: downloadQr
+
+components:
+  schemas:
+    UrlRequest:
+      type: object
+      description: Request with long url
+      required:
+        - baseUrl
+      properties:
+        baseUrl:
+          type: string
+
+    UrlResponse:
+      type: object
+      description: Response with short url
+      required:
+        - shortUrl
+      properties:
+        shortUrl:
+          type: string
